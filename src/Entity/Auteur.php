@@ -27,6 +27,11 @@ class Auteur
     #[ORM\ManyToMany(targetEntity: Livre::class, mappedBy: 'auteur')]
     private Collection $livres;
 
+    public function __toString(): string
+    {
+        return $this->nom_auteur ?? '';
+    }
+
     public function __construct()
     {
         $this->livres = new ArrayCollection();

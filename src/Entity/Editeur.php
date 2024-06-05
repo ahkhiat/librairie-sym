@@ -19,13 +19,13 @@ class Editeur
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $adresse = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $code_postal = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $ville = null;
 
     #[ORM\Column(length: 255)]
@@ -40,6 +40,11 @@ class Editeur
     public function __construct()
     {
         $this->edition = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom ?? '';
     }
 
 

@@ -17,7 +17,7 @@ class Livre
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $titreLivre = null;
+    private ?string $titre_livre = null;
 
     #[ORM\Column(length: 255)]
     private ?string $theme_livre = null;
@@ -39,7 +39,10 @@ class Livre
         $this->edition = new ArrayCollection();
     }
 
-
+    public function __toString(): string
+    {
+        return $this->titre_livre ?? '';
+    }
     
     public function getId(): ?int
     {
@@ -48,12 +51,12 @@ class Livre
 
     public function getTitreLivre(): ?string
     {
-        return $this->titreLivre;
+        return $this->titre_livre;
     }
 
-    public function setTitreLivre(string $titreLivre): static
+    public function setTitreLivre(string $titre_livre): static
     {
-        $this->titreLivre = $titreLivre;
+        $this->titre_livre = $titre_livre;
 
         return $this;
     }
