@@ -1,3 +1,17 @@
 body {
-    background-color: skyblue;
+    background-color: rgb(253, 252, 240);
+}
+
+.price-integer {
+
+    font-size: 2em;
+    line-height: 1; /* Ajuster la hauteur de ligne */
+
+}
+
+.price-decimal {
+   
+    font-size: 0.75em; 
+    vertical-align: super; /* Alignement des décimales en haut */
+    line-height: 1; /* Ajuster la hauteur de ligne */
 }

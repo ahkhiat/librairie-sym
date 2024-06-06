@@ -2,39 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Livre;
+use App\Entity\LivreAuteur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Livre>
+ * @extends ServiceEntityRepository<LivreAuteur>
  */
-class LivreRepository extends ServiceEntityRepository
+class LivreAuteurRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Livre::class);
-    }
-
-    public function all_livres()
-    {
-        $conn = $this->getEntityManager()->getConnection();
-
-        $sql = 'SELECT *
-                FROM livre l
-                LEFT JOIN edition e ON l.id = e.livre_id
-                LEFT JOIN livre_auteur la ON l.id = la.livre_id 
-                LEFT JOIN auteur a ON la.auteur_id = a.id
-                LEFT JOIN editeur ed ON e.editeur_id = ed.id';
-
-        $resultSet = $conn->executeQuery($sql);
-
-        // returns an array of arrays (i.e. a raw data set)
-        return $resultSet->fetchAllAssociative();
+        parent::__construct($registry, LivreAuteur::class);
     }
 
     //    /**
-    //     * @return Livre[] Returns an array of Livre objects
+    //     * @return LivreAuteur[] Returns an array of LivreAuteur objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -48,7 +31,7 @@ class LivreRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Livre
+    //    public function findOneBySomeField($value): ?LivreAuteur
     //    {
     //        return $this->createQueryBuilder('l')
     //            ->andWhere('l.exampleField = :val')

@@ -29,7 +29,7 @@ class EditionCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Edition')
             ->setEntityLabelInPlural('Editions')
-            ->setSearchFields(['livre.titre_livre', 'editeur.nom', 'livre.auteur.nom_auteur'])
+            ->setSearchFields(['livre.titre_livre', 'editeur.nom_editeur', 'livre.auteur.nom_auteur'])
             ->setDefaultSort(['annee_edition' => 'DESC'])
             ->showEntityActionsInlined()
             ->setPageTitle(Crud::PAGE_INDEX, 'Liste des Éditions');
@@ -41,7 +41,7 @@ class EditionCrudController extends AbstractCrudController
 
         return [
             AssociationField::new('livre')->setSortProperty('titre_livre'),
-            AssociationField::new('editeur')->setSortProperty('nom'),
+            AssociationField::new('editeur')->setSortProperty('nom_editeur'),
             ChoiceField::new('annee_edition')->setChoices(array_combine($years, $years))->setLabel('Année d\'édition'),
             IntegerField::new('nbr_pages'),
             MoneyField::new('prix_vente')->setCurrency('EUR'),            
@@ -50,12 +50,13 @@ class EditionCrudController extends AbstractCrudController
                 ->setBasePath('/images/editions')
                 ->setUploadDir('public/images/editions')
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
-                ->setRequired(false),
-            ImageField::new('imageFile')
-                ->setFormType(VichImageType::class)
-                ->setUploadDir('public/images/editions')
-                ->onlyOnForms()
-                ->setLabel('Image Upload'),
+                ->setRequired(false)
+
+            // ImageField::new('imageFile')
+            //     ->setFormType(VichImageType::class)
+            //     ->setUploadDir('public/images/editions')
+            //     ->onlyOnForms()
+            //     ->setLabel('Image Upload'),
 
         ];
     }

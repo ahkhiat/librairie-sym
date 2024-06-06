@@ -1,0 +1,51 @@
+<li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Livres
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/livres">Tous les livres</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/livres/livrespartitre">Recherche par titre</a></li>
+            <li><a class="dropdown-item" href="/livres/livresparauteur">Recherche par auteur</a></li>
+            <li><a class="dropdown-item" href="/livres/livresparediteur">Recherche par éditeur</a></li>
+          </ul>
+        </li>
+
+        {# <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Fournisseurs
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/fournisseurs">Tous les fournisseurs</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/fournisseurs/fournisseursparnom">Recherche par nom</a></li>
+            <li><a class="dropdown-item" href="/fournisseurs/fournisseursparville">Recherche par ville</a></li>
+            <li><a class="dropdown-item" href="/fournisseurs/fournisseursparpays">Recherche par pays</a></li>
+          </ul>
+        </li> #}
+
+{% if app.user and 'ROLE_ADMIN' in app.user.getroles()%}
+
+        {# <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Utilisateurs
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/utilisateur">Tous les utilisateurs</a></li>
+            <li><hr class="dropdown-divider"></li>
+          </ul>
+        </li> #}
+{% endif %}
+
+        {# <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Commandes
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/commandes">Toutes les commandes</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/commandes/commandespardate">Recherche par date</a></li>
+            <li><a class="dropdown-item" href="/commandes/commandesparfournisseur">Recherche par fournisseur</a></li>
+            <li><a class="dropdown-item" href="/commandes/commandesparutilisateur">Recherche par utilisateur</a></li>
+          </ul>
+        </li> #}

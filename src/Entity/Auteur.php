@@ -22,20 +22,21 @@ class Auteur
     private ?string $prenom_auteur = null;
 
     /**
-     * @var Collection<int, Livre>
+     * @var Collection<int, LivreAuteur>
      */
-    #[ORM\ManyToMany(targetEntity: Livre::class, mappedBy: 'auteur')]
-    private Collection $livres;
-
-    public function __toString(): string
-    {
-        return $this->nom_auteur ?? '';
-    }
+    #[ORM\OneToMany(targetEntity: LivreAuteur::class, mappedBy: 'auteur')]
+    private Collection $livreAuteurs;
 
     public function __construct()
     {
-        $this->livres = new ArrayCollection();
+        $this->livreAuteurs = new ArrayCollection();
     }
+
+    public function __toString(): string
+    {
+        return $this->prenom_auteur . ' ' . $this->nom_auteur ;
+    }
+
 
     public function getId(): ?int
     {
@@ -67,29 +68,36 @@ class Auteur
     }
 
     /**
-     * @return Collection<int, Livre>
+     * @return Collection<int, LivreAuteur>
      */
-    public function getLivres(): Collection
+    public function getLivreAuteurs(): Collection
     {
-        return $this->livres;
+        return $this->livreAuteurs;
     }
 
-    public function addLivre(Livre $livre): static
+    public function addLivreAuteur(LivreAuteur $livreAuteur): static
     {
-        if (!$this->livres->contains($livre)) {
-            $this->livres->add($livre);
-            $livre->addAuteur($this);
+        if (!$this->livreAuteurs->contains($livreAuteur)) {
+            $this->livreAuteurs->add($livreAuteur);
+            $livreAuteur->setAuteur($this);
         }
 
         return $this;
     }
 
-    public function removeLivre(Livre $livre): static
+    public function removeLivreAuteur(LivreAuteur $livreAuteur): static
     {
-        if ($this->livres->removeElement($livre)) {
-            $livre->removeAuteur($this);
+        if ($this->livreAuteurs->removeElement($livreAuteur)) {
+            // set the owning side to null (unless already changed)
+            if ($livreAuteur->getAuteur() === $this) {
+                $livreAuteur->setAuteur(null);
+            }
         }
 
         return $this;
     }
+
+
+
+
 }

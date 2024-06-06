@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Livres{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-4 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-7">
+        <h1>Liste des Livres</h1>
+        <div class="row">
+            {% for livre in livres %}
+            {# {{dump(livre)}} #}
+                <div class="col-12 mb-2">
+                    <div class="card d-flex flex-row ">
+                        <div class="col-3 bg-light text-center">
+                            <img src="{{ asset('/images/editions/' ~ livre.image_name) }}" alt="{{ livre.image_name }}"
+                                 class=" img-fluid" style="height: 25vh">
+                            
+                        </div>
+                        <div class="card-body ">
+                        	{# <a href="{{ path('app_livre_fiche', {'id': livre.getEditionId()}) }}"> #}
+                                <h4 class="card-title ">{{ livre.titre_livre }}</h4>
+                            </a>
+                            <p class="card-subtitle mb-2 fs-7">
+                                de {{ livre.prenom_auteur }} {{ livre.nom_auteur }} 
+                            </p>
+                            <p>Editions {{ livre.nom_editeur }}</p>
+                            <p class="text-primary fw-bold">{{ livre.format }}</p>
+                                {% set prix_entier = (livre.prix_vente / 100) | number_format(0, '', '', '') %}
+                                {% set prix_decimal = (livre.prix_vente / 100) | number_format(2, ',', '') | split(',')[1] %} 
+                                <div class="d-flex">
+                                    <p class=""><span class="price-integer">{{ prix_entier }}</span></p>
+                                    <p class=""> <span class="price-decimal">{{ prix_decimal }} €</span></p>
+                                </div>
+          
+                            {# <p class="card-text">{{ livre.description }}</p> #}
+                            {# <a href="{{ path('livre_show', { id: livre.id }) }}" class="btn btn-primary">Voir les détails</a> #}
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+    
+
+
+
+

@@ -17,19 +17,19 @@ class Editeur
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $nom_editeur = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $adresse = null;
+    private ?string $adresse_editeur = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $code_postal = null;
+    private ?string $code_postal_editeur = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $ville = null;
+    private ?string $ville_editeur = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $pays = null;
+    private ?string $pays_editeur = null;
 
     /**
      * @var Collection<int, Edition>
@@ -44,7 +44,7 @@ class Editeur
 
     public function __toString(): string
     {
-        return $this->nom ?? '';
+        return $this->nom_editeur ?? '';
     }
 
 
@@ -53,62 +53,62 @@ class Editeur
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getNomEditeur(): ?string
     {
-        return $this->nom;
+        return $this->nom_editeur;
     }
 
-    public function setNom(string $nom): static
+    public function setNomEditeur(string $nom_editeur): static
     {
-        $this->nom = $nom;
+        $this->nom_editeur = $nom_editeur;
 
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getAdresseEditeur(): ?string
     {
-        return $this->adresse;
+        return $this->adresse_editeur;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAdresseEditeur(string $adresse_editeur): static
     {
-        $this->adresse = $adresse;
+        $this->adresse_editeur = $adresse_editeur;
 
         return $this;
     }
 
-    public function getCodePostal(): ?string
+    public function getCodePostalEditeur(): ?string
     {
-        return $this->code_postal;
+        return $this->code_postal_editeur;
     }
 
-    public function setCodePostal(string $code_postal): static
+    public function setCodePostalEditeur(string $code_postal_editeur): static
     {
-        $this->code_postal = $code_postal;
+        $this->code_postal_editeur = $code_postal_editeur;
 
         return $this;
     }
 
-    public function getVille(): ?string
+    public function getVilleEditeur(): ?string
     {
-        return $this->ville;
+        return $this->ville_editeur;
     }
 
-    public function setVille(string $ville): static
+    public function setVilleEditeur(string $ville_editeur): static
     {
-        $this->ville = $ville;
+        $this->ville_editeur = $ville_editeur;
 
         return $this;
     }
 
-    public function getPays(): ?string
+    public function getPaysEditeur(): ?string
     {
-        return $this->pays;
+        return $this->pays_editeur;
     }
 
-    public function setPays(string $pays): static
+    public function setPaysEditeur(string $pays_editeur): static
     {
-        $this->pays = $pays;
+        $this->pays_editeur = $pays_editeur;
 
         return $this;
     }

@@ -16,8 +16,8 @@ class Edition
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column (name: 'id')]
+    private ?int $edition_id = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $annee_edition = null;
@@ -46,9 +46,9 @@ class Edition
     #[ORM\ManyToOne(inversedBy: 'edition')]
     private ?Editeur $editeur = null;
 
-    public function getId(): ?int
+    public function getEditionId(): ?int
     {
-        return $this->id;
+        return $this->edition_id;
     }
 
     public function getAnneeEdition(): ?int
@@ -111,14 +111,31 @@ class Edition
         return $this;
     }
 
+
+
+    
+
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
 
         if (null !== $imageFile) {
             $this->updatedAt = new \DateTimeImmutable();
+            $extension = $imageFile->guessExtension();
+            $this->setImageName($this->imageName); 
+            $this->imageName .= '.' . $extension;   
         }
     }
+
+    // public function setImageFile(?File $imageFile = null): void
+    // {
+    //     $this->imageFile = $imageFile;
+    //     if (null !== $imageFile) {
+    //         $this->updatedAt = new \DateTimeImmutable();
+    //         $newFileName = $this->getUploadFileNamePattern().'.'.$imageFile->guessExtension();
+    //         $this->setImageName($newFileName);
+    //     }
+    // }
 
     public function getImageFile(): ?File
     {
@@ -159,5 +176,17 @@ class Edition
         $this->editeur = $editeur;
 
         return $this;
+    }
+
+    public function getUploadFileNamePattern()
+    {
+        $bookName = $this->getLivre()->getTitreLivre();
+        $publisherName = $this->getEditeur()->getNomEditeur();
+        $year = $this->getAnneeEdition();
+
+        $bookName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $bookName);
+        $publisherName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $publisherName);
+
+        return sprintf('%s_%s_%s.[extension]', $bookName, $publisherName, $year);
     }
 }

@@ -23,20 +23,22 @@ class Livre
     private ?string $theme_livre = null;
 
     /**
-     * @var Collection<int, Auteur>
-     */
-    #[ORM\ManyToMany(targetEntity: Auteur::class, inversedBy: 'livres')]
-    private Collection $auteur;
-
-    /**
      * @var Collection<int, Edition>
      */
     #[ORM\OneToMany(targetEntity: Edition::class, mappedBy: 'livre')]
     private Collection $edition;
 
+    /**
+     * @var Collection<int, LivreAuteur>
+     */
+    #[ORM\OneToMany(targetEntity: LivreAuteur::class, mappedBy: 'livre')]
+    private Collection $livreAuteurs;
+
     public function __construct()
     {
         $this->edition = new ArrayCollection();
+        $this->livreAuteurs = new ArrayCollection();
+
     }
 
     public function __toString(): string
@@ -74,30 +76,6 @@ class Livre
     }
 
     /**
-     * @return Collection<int, Auteur>
-     */
-    public function getAuteur(): Collection
-    {
-        return $this->auteur;
-    }
-
-    public function addAuteur(Auteur $auteur): static
-    {
-        if (!$this->auteur->contains($auteur)) {
-            $this->auteur->add($auteur);
-        }
-
-        return $this;
-    }
-
-    public function removeAuteur(Auteur $auteur): static
-    {
-        $this->auteur->removeElement($auteur);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Edition>
      */
     public function getEdition(): Collection
@@ -127,6 +105,40 @@ class Livre
         return $this;
     }
 
-    
+    /**
+     * @return Collection<int, LivreAuteur>
+     */
+    public function getLivreAuteurs(): Collection
+    {
+        return $this->livreAuteurs;
+    }
+
+    public function addLivreAuteur(LivreAuteur $livreAuteur): static
+    {
+        if (!$this->livreAuteurs->contains($livreAuteur)) {
+            $this->livreAuteurs->add($livreAuteur);
+            $livreAuteur->setLivre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLivreAuteur(LivreAuteur $livreAuteur): static
+    {
+        if ($this->livreAuteurs->removeElement($livreAuteur)) {
+            // set the owning side to null (unless already changed)
+            if ($livreAuteur->getLivre() === $this) {
+                $livreAuteur->setLivre(null);
+            }
+        }
+
+        return $this;
+    }
+
+  
 
 }
+
+    
+
+
