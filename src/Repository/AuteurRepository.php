@@ -16,6 +16,24 @@ class AuteurRepository extends ServiceEntityRepository
         parent::__construct($registry, Auteur::class);
     }
 
+    public function auteur_show($auteur_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT l.titre_livre
+                FROM livre_auteur la
+                LEFT JOIN auteur a ON la.auteur_id = a.id
+                LEFT JOIN livre l ON l.id = la.livre_id
+                WHERE a.id = :aid
+
+                ';
+        $requete_preparee = $conn->prepare($sql);
+        $resultSet = $requete_preparee->executeQuery(['aid' => $auteur_id]);
+
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAssociative();
+    }
     //    /**
     //     * @return Auteur[] Returns an array of Auteur objects
     //     */

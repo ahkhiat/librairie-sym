@@ -20,12 +20,14 @@ class LivreRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = 'SELECT *
+        $sql = 'SELECT l.titre_livre, e.id AS edition_id, e.editeur_id, e.prix_vente, e.image_name, 
+                       e.format, a.nom_auteur, a.prenom_auteur, ed.nom_editeur, la.auteur_id
                 FROM livre l
                 LEFT JOIN edition e ON l.id = e.livre_id
                 LEFT JOIN livre_auteur la ON l.id = la.livre_id 
                 LEFT JOIN auteur a ON la.auteur_id = a.id
-                LEFT JOIN editeur ed ON e.editeur_id = ed.id';
+                LEFT JOIN editeur ed ON e.editeur_id = ed.id
+                ';
 
         $resultSet = $conn->executeQuery($sql);
 

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Livre;
+use App\Repository\EditionRepository;
 use App\Repository\LivreRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,11 +19,11 @@ class LivreController extends AbstractController
         ]);
     }
 
-    #[Route('/livres/{id}', name: 'app_livre_fiche', methods: ['GET'])]
-    public function ficheLivre(Livre $livre, LivreRepository $livreRepository): Response
+    #[Route('/livres/{edition_id}', name: 'app_livre_fiche', methods: ['GET'])]
+    public function ficheLivre(EditionRepository $editionRepository, $edition_id): Response
     {
         return $this->render('livre/livre_fiche.html.twig', [
-            'livre' => $livre,
+            'livre' => $editionRepository->livre_show($edition_id),
         ]);
     }
 }

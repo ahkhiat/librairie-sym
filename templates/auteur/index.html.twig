@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des auteurs{% endblock %}
+
+{% block body %}
+
+
+{# {{ dump(livres) }} #}
+<div class="mt-5 mb-5">
+
+<h1 class="text-center">Liste des auteurs</h1>
+
+<table class="table w-75 mx-auto table-striped table-bordered table-hover">
+
+    <tr>
+        <TH>Nom</TH> 
+        <TH>Prénom</TH>
+        
+    </tr>
+
+    {% for a in auteurs %}
+    <tr>
+        <td> {{ a.nom_auteur }} </td>
+        <td> {{ a.prenom_auteur }} </td>
+        
+    </tr>
+{% endfor %}
+
+</table>
+</div>
+
+{% endblock %}
