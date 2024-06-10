@@ -36,6 +36,25 @@ class EditionRepository extends ServiceEntityRepository
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAssociative();
     }
+
+    public function findRandomEditions($limit)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT l.titre_livre, e.prix_vente, e.image_name, a.prenom_auteur, a.nom_auteur, ed.nom_editeur, e.id AS edition_id
+                FROM edition e
+                JOIN editeur ed ON e.editeur_id = ed.id
+                JOIN livre l ON e.livre_id = l.id
+                JOIN livre_auteur la ON l.id = la.livre_id
+                JOIN auteur a ON a.id = la.auteur_id
+                ORDER BY RAND() 
+                LIMIT :limit';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $resultSet = $stmt->executeQuery();
+
+        return $resultSet->fetchAllAssociative();
+    }
     //    /**
     //     * @return Edition[] Returns an array of Edition objects
     //     */

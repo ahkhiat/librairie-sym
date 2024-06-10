@@ -20,19 +20,19 @@ class AuteurRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = 'SELECT l.titre_livre
-                FROM livre_auteur la
+        $sql = 'SELECT l.titre_livre, e.annee_edition, e.image_name, ed.nom_editeur, e.id AS edition_id
+                FROM edition e
+                JOIN livre_auteur la ON la.livre_id = e.livre_id 
                 LEFT JOIN auteur a ON la.auteur_id = a.id
                 LEFT JOIN livre l ON l.id = la.livre_id
+                JOIN editeur ed ON e.editeur_id = ed.id
                 WHERE a.id = :aid
 
                 ';
         $requete_preparee = $conn->prepare($sql);
         $resultSet = $requete_preparee->executeQuery(['aid' => $auteur_id]);
 
-
-        // returns an array of arrays (i.e. a raw data set)
-        return $resultSet->fetchAssociative();
+        return $resultSet->fetchAllAssociative();
     }
     //    /**
     //     * @return Auteur[] Returns an array of Auteur objects

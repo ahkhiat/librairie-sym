@@ -4,8 +4,7 @@
 
 {% block body %}
 
-
-{{ dump(livres) }}
+{# {{ dump(livres) }} #}
 <div class="mt-5 mb-5">
 
 {# <h1 class="text-center">{{  }}</h1> #}
@@ -13,16 +12,25 @@
 <table class="table w-75 mx-auto table-striped table-bordered table-hover">
 
     <tr>
-        <TH>Titre livre</TH> 
-        {# <TH>Nom</TH> #}
+        <TH></TH> 
+        <TH>Titre</TH> 
+        <TH>Editeur</TH> 
+        <TH>Année d'édition</TH>
         {# <TH>Rue</TH> #}
         
     </tr>
 
     {% for l in livres %}
     <tr>
-        <td> {{ l }} </td>
-        {# <td> {{ l.raisonsociale }} </td> #}
+        <td> 
+            <a href="{{ path('app_livre_fiche', {'edition_id': l.edition_id}) }}">
+                <img src="{{ asset('/images/editions/' ~ l.image_name) }}" alt="{{ l.image_name }}"
+                                    class=" img-fluid" style="height: 20vh">
+            </a>
+        </td>
+        <td> {{ l.titre_livre }} </td>
+        <td> {{ l.nom_editeur }} </td>
+        <td> {{ l.annee_edition }} </td>
         {# <td> {{ l.ruefournisseur }} </td>  #}
         
     </tr>

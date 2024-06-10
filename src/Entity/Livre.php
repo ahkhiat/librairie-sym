@@ -17,6 +17,9 @@ class Livre
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $ISBN = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $titre_livre = null;
 
     #[ORM\Column(length: 255)]
@@ -49,6 +52,18 @@ class Livre
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getISBN(): ?string
+    {
+        return $this->ISBN;
+    }
+
+    public function setISBN(string $ISBN): static
+    {
+        $this->ISBN = $ISBN;
+
+        return $this;
     }
 
     public function getTitreLivre(): ?string
@@ -135,8 +150,8 @@ class Livre
         return $this;
     }
 
-  
 
+    
 }
 
     

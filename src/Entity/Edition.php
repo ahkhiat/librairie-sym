@@ -31,6 +31,12 @@ class Edition
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private ?string $prix_vente = null;
 
+    #[ORM\Column]
+    private ?int $stock = null;
+
+    #[ORM\Column]
+    private ?int $alerte = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageName = null;
 
@@ -95,6 +101,29 @@ class Edition
     public function setPrixVente(string $prix_vente): static
     {
         $this->prix_vente = $prix_vente;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): self
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+    public function getAlerte(): ?int
+    {
+        return $this->alerte;
+    }
+
+    public function setAlerte(?int $alerte): self
+    {
+        $this->alerte = $alerte;
 
         return $this;
     }
