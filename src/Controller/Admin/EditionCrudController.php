@@ -50,7 +50,11 @@ class EditionCrudController extends AbstractCrudController
                 ->setBasePath('/images/editions')
                 ->setUploadDir('public/images/editions')
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
-                ->setRequired(false)
+                ->setRequired(false),
+            IntegerField::new('stock'),
+            IntegerField::new('alerte'),
+
+
 
             // ImageField::new('imageFile')
             //     ->setFormType(VichImageType::class)

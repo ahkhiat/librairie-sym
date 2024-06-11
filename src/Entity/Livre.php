@@ -25,6 +25,9 @@ class Livre
     #[ORM\Column(length: 255)]
     private ?string $theme_livre = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
     /**
      * @var Collection<int, Edition>
      */
@@ -36,6 +39,8 @@ class Livre
      */
     #[ORM\OneToMany(targetEntity: LivreAuteur::class, mappedBy: 'livre')]
     private Collection $livreAuteurs;
+
+    
 
     public function __construct()
     {
@@ -146,6 +151,18 @@ class Livre
                 $livreAuteur->setLivre(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

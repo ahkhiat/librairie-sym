@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -39,6 +41,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
+
+    /**
+     * @var Collection<int, Adresse>
+     */
+    #[ORM\OneToMany(targetEntity: Adresse::class, mappedBy: 'user')]
+    private Collection $adresses;
+
+    /**
+     * @var Collection<int, Panier>
+     */
+    #[ORM\OneToMany(targetEntity: Panier::class, mappedBy: 'user')]
+    private Collection $paniers;
+
+    /**
+     * @var Collection<int, Commande>
+     */
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'user')]
+    private Collection $commandes;
+
+    public function __construct()
+    {
+        $this->adresses = new ArrayCollection();
+        $this->paniers = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -135,6 +162,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Adresse>
+     */
+    public function getAdresses(): Collection
+    {
+        return $this->adresses;
+    }
+
+    public function addAdress(Adresse $adress): static
+    {
+        if (!$this->adresses->contains($adress)) {
+            $this->adresses->add($adress);
+            $adress->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdress(Adresse $adress): static
+    {
+        if ($this->adresses->removeElement($adress)) {
+            // set the owning side to null (unless already changed)
+            if ($adress->getUser() === $this) {
+                $adress->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Panier>
+     */
+    public function getPaniers(): Collection
+    {
+        return $this->paniers;
+    }
+
+    public function addPanier(Panier $panier): static
+    {
+        if (!$this->paniers->contains($panier)) {
+            $this->paniers->add($panier);
+            $panier->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanier(Panier $panier): static
+    {
+        if ($this->paniers->removeElement($panier)) {
+            // set the owning side to null (unless already changed)
+            if ($panier->getUser() === $this) {
+                $panier->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): static
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): static
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getUser() === $this) {
+                $commande->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -20,7 +20,7 @@ class EditionRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = 'SELECT e.annee_edition, e.nbr_pages, e.format, e.prix_vente, e.image_name, l.titre_livre, ed.nom_editeur, a.nom_auteur, a.prenom_auteur, la.auteur_id
+        $sql = 'SELECT e.annee_edition, e.nbr_pages, e.format, e.prix_vente, e.image_name, l.titre_livre, ed.nom_editeur, a.nom_auteur, a.prenom_auteur, la.auteur_id, l.description, l.isbn, e.id AS edition_id, e.stock
                 FROM edition e
                 LEFT JOIN livre l ON e.livre_id = l.id
                 LEFT JOIN editeur ed ON e.editeur_id = ed.id

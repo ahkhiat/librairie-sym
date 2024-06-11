@@ -23,24 +23,29 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
                                      class=" img-fluid">
   <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
     <a href="#" class="w3-bar-item w3-button">Meilleures ventes</a>
-    <a href="#" class="w3-bar-item w3-button">Romans</a>
-    <a href="#" class="w3-bar-item w3-button">Policiers</a>
-    <a href="#" class="w3-bar-item w3-button">Classiques</a>
-    <a href="#" class="w3-bar-item w3-button">Pratiques</a>
-    <a href="#" class="w3-bar-item w3-button">Biographies</a>
+    <a href="/livres" class="w3-bar-item w3-button">Tous les livres</a>
+    <a href="/livres/categories/romans" class="w3-bar-item w3-button">Romans</a>
+    <a href="/livres/categories/policiers" class="w3-bar-item w3-button">Policiers</a>
+    <a href="/livres/categories/scifi" class="w3-bar-item w3-button">Science-fiction</a>
+    <a href="/livres/categories/classiques" class="w3-bar-item w3-button">Classiques</a>
+    <a href="/livres/categories/pratiques" class="w3-bar-item w3-button">Pratiques</a>
+    <a href="/livres/categories/biographies" class="w3-bar-item w3-button">Biographies</a>
   </div>
   <a href="#footer" class="w3-bar-item w3-button w3-padding">Contact</a> 
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding" onclick="document.getElementById('newsletter').style.display='block'">Newsletter</a> 
-  <a href="#footer"  class="w3-bar-item w3-button w3-padding">Subscribe</a>
-      {% if not app.user %}
-       <a href="/login" class="w3-bar-item w3-button w3-padding">Se connecter <i class="fa-solid fa-right-to-bracket"></i></a>
-      {% endif %}
+    {% if app.user and 'ROLE_ADMIN' in app.user.getroles()%}
+      <a href="/admin"  class="w3-bar-item w3-button w3-padding text-danger">Dashboard</a>
+    {% endif %}
+
+    {% if not app.user %}
+      <a href="/login" class="w3-bar-item w3-button w3-padding">Se connecter <i class="fa-solid fa-right-to-bracket"></i></a>
+    {% endif %}
 
 
-      {% if app.user %}
-       {# {{ app.user.userIdentifier }} #}
-        <a href="/logout" class="w3-bar-item w3-button w3-padding">Sortir <i class="fa-solid fa-right-from-bracket"></i></a>
-      {% endif %}
+    {% if app.user %}
+      {# {{ app.user.userIdentifier }} #}
+      <a href="/logout" class="w3-bar-item w3-button w3-padding ">Sortir <i class="fa-solid fa-right-from-bracket"></i></a>
+    {% endif %}
 </nav>
 
 <!-- Top menu on small screens -->
@@ -59,13 +64,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <div class="w3-hide-large" style="margin-top:83px"></div>
   
   <!-- Top header -->
-  <header class="w3-container w3-xlarge">
-    <p class="w3-left"></p>
-    <p class="w3-right">
-      <i class="fa fa-shopping-cart me-3"></i>
-      <i class="fa fa-search"></i>
-    </p>
-  </header>
+  {# {% include('headerCart.html.twig') %} #}
 
   <!-- Image header -->
   <div class="w3-display-container w3-container">

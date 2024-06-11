@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EditionRepository;
@@ -31,10 +33,10 @@ class Edition
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private ?string $prix_vente = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $stock = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $alerte = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -51,6 +53,24 @@ class Edition
 
     #[ORM\ManyToOne(inversedBy: 'edition')]
     private ?Editeur $editeur = null;
+
+    /**
+     * @var Collection<int, PanierArticle>
+     */
+    #[ORM\OneToMany(targetEntity: PanierArticle::class, mappedBy: 'edition')]
+    private Collection $panierArticles;
+
+    /**
+     * @var Collection<int, CommandeArticle>
+     */
+    #[ORM\OneToMany(targetEntity: CommandeArticle::class, mappedBy: 'edition')]
+    private Collection $commandeArticles;
+
+    public function __construct()
+    {
+        $this->panierArticles = new ArrayCollection();
+        $this->commandeArticles = new ArrayCollection();
+    }
 
     public function getEditionId(): ?int
     {
@@ -217,5 +237,65 @@ class Edition
         $publisherName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $publisherName);
 
         return sprintf('%s_%s_%s.[extension]', $bookName, $publisherName, $year);
+    }
+
+    /**
+     * @return Collection<int, PanierArticle>
+     */
+    public function getPanierArticles(): Collection
+    {
+        return $this->panierArticles;
+    }
+
+    public function addPanierArticle(PanierArticle $panierArticle): static
+    {
+        if (!$this->panierArticles->contains($panierArticle)) {
+            $this->panierArticles->add($panierArticle);
+            $panierArticle->setEdition($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanierArticle(PanierArticle $panierArticle): static
+    {
+        if ($this->panierArticles->removeElement($panierArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($panierArticle->getEdition() === $this) {
+                $panierArticle->setEdition(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeArticle>
+     */
+    public function getCommandeArticles(): Collection
+    {
+        return $this->commandeArticles;
+    }
+
+    public function addCommandeArticle(CommandeArticle $commandeArticle): static
+    {
+        if (!$this->commandeArticles->contains($commandeArticle)) {
+            $this->commandeArticles->add($commandeArticle);
+            $commandeArticle->setEdition($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeArticle(CommandeArticle $commandeArticle): static
+    {
+        if ($this->commandeArticles->removeElement($commandeArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeArticle->getEdition() === $this) {
+                $commandeArticle->setEdition(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+<div class="container mt-4 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-7">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/">panier</a></li>
+        </ol>
+    </nav>
+
+    <h1>Panier</h1>
+
+    <table class="table w-75 mx-auto table-striped table-bordered table-hover">
+        <tr>
+            <TH></TH> 
+            <TH>Titre</TH>
+            <TH>Auteur</TH>
+            <TH>Edition</TH>
+            <TH>Qté</TH>
+            <TH>Prix</TH>
+            <TH>Total</TH>
+        </tr>
+        {% for livre in livres %}
+        <tr>
+            <td> <img src="{{ asset('/images/editions/' ~ livre.image_name) }}" alt="{{ livre.image_name }}"
+                                    class=" img-fluid" style="height: 10vh"> </td>
+            <td> {{ livre.titre_livre }} </td>
+            <td> {{ livre.prenom_auteur }} {{ livre.nom_auteur }} </td>
+            <td> {{ livre.nom_editeur }} </td>
+            <td> {{ livre.quantite }} </td>
+            <td> {{ (livre.prix_vente / 100) | number_format(2, '.', ',') }} €</td>
+            <td> {{ ((livre.quantite)*(livre.prix_vente / 100)) | number_format(2, '.', ',') }} €</td>
+            {# <td> {{ f.urlfournisseur }} </td> #}
+            {# <td> {{ f.emailfournisseur }} </td> #}
+            {# <td> {{ f.faxfournisseur }} </td>  #}
+        </tr>
+        {% endfor %}
+    </table>  
+</div>
+{% endblock %}

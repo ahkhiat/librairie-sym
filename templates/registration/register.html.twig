@@ -3,7 +3,9 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+<div class="col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
+
+    <h1>S'enregistrer</h1>
 
     {{ form_errors(registrationForm) }}
 
@@ -18,4 +20,6 @@
 
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
+</div>
+
 {% endblock %}

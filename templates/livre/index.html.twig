@@ -5,7 +5,24 @@
 {% block body %}
 
     <div class="container mt-4 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-7">
-        <h1>Liste des Livres</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+            {% if theme is defined %}
+                <a href="/livres">
+            {% endif %}
+            tous
+            {% if theme is defined %}
+                </a>
+            {% endif %}
+            </li>
+            {% if theme is defined %}
+                <li class="breadcrumb-item active" aria-current="page">{{ theme }}</li>
+            {% endif %}
+        </ol>
+    </nav>
+        <h1>{{titre_page}}</h1>
         <div class="row">
             {% for livre in livres %}
             {# {{dump(livre)}} #}
@@ -18,19 +35,19 @@
                         </div>
                         <div class="card-body ">
                         	<a href="{{ path('app_livre_fiche', {'edition_id': livre.edition_id}) }}">
-                                <h4 class="card-title ">{{ livre.titre_livre }}</h4>
+                                <h5 class="card-title ">{{ livre.titre_livre }}</h5>
                             </a>
                             <p class="card-subtitle mb-2 fs-7">
-                                de {{ livre.prenom_auteur }} {{ livre.nom_auteur }} 
+                                de  <a href="{{ path('app_auteur_fiche', {'auteur_id': livre.auteur_id}) }}">
+                                        {{ livre.prenom_auteur }} {{ livre.nom_auteur }} 
+                                    </a>
                             </p>
                             <p>Editions {{ livre.nom_editeur }}</p>
                             <p class="text-primary fw-bold">{{ livre.format }}</p>
-                                {% set prix_entier = (livre.prix_vente / 100) | number_format(0, '', '', '') %}
-                                {% set prix_decimal = (livre.prix_vente / 100) | number_format(2, ',', '') | split(',')[1] %} 
-                                <div class="d-flex">
-                                    <p class=""><span class="price-integer">{{ prix_entier }}</span></p>
-                                    <p class=""> <span class="price-decimal">{{ prix_decimal }} €</span></p>
-                                </div>
+                                
+                            <div class="d-flex">  
+                                <span class="h4">{{ (livre.prix_vente / 100) | number_format(2, '.', ',') }} €</span>
+                            </div>
           
                             {# <p class="card-text">{{ livre.description }}</p> #}
                             {# <a href="{{ path('livre_show', { id: livre.id }) }}" class="btn btn-primary">Voir les détails</a> #}
