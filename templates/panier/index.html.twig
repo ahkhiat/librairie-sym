@@ -12,7 +12,7 @@
     </nav>
 
     <h1>Panier</h1>
-
+    {% if livres %}
     <table class="table w-75 mx-auto table-striped table-bordered table-hover">
         <tr>
             <TH></TH> 
@@ -22,6 +22,7 @@
             <TH>Qté</TH>
             <TH>Prix</TH>
             <TH>Total</TH>
+            <TH>Actions</TH>
         </tr>
         {% for livre in livres %}
         <tr>
@@ -30,14 +31,23 @@
             <td> {{ livre.titre_livre }} </td>
             <td> {{ livre.prenom_auteur }} {{ livre.nom_auteur }} </td>
             <td> {{ livre.nom_editeur }} </td>
-            <td> {{ livre.quantite }} </td>
+            <td> 
+                <div class="input-group">
+                    <button class="btn btn-secondary btn-sm" type="button" onclick="updateQuantity('{{ livre.edition_id }}', -1)">-</button>
+                    <input type="text" class="form-control text-center" id="quantity-{{ livre.edition_id }}" value="{{ livre.quantite }}" readonly>
+                    <button class="btn btn-secondary btn-sm" type="button" onclick="updateQuantity('{{ livre.edition_id }}', 1)">+</button>
+                </div>
+            </td>
             <td> {{ (livre.prix_vente / 100) | number_format(2, '.', ',') }} €</td>
             <td> {{ ((livre.quantite)*(livre.prix_vente / 100)) | number_format(2, '.', ',') }} €</td>
-            {# <td> {{ f.urlfournisseur }} </td> #}
-            {# <td> {{ f.emailfournisseur }} </td> #}
-            {# <td> {{ f.faxfournisseur }} </td>  #}
+             <td>
+                <button class="btn btn-danger btn-sm btn-remove" data-id="{{ livre.edition_id }}"><i class="fa-solid fa-trash"></i></button>
+            </td>
         </tr>
         {% endfor %}
-    </table>  
+    </table>
+    {% else %}
+    <p>Votre panier est vide !</p>  
+    {% endif %}
 </div>
 {% endblock %}

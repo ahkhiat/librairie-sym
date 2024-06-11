@@ -2,7 +2,7 @@ body {
     background-color: rgb(253, 252, 240);
 }
 
-a {
+a, button {
     text-decoration: none;
     color: black;
 }

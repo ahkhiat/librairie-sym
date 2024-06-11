@@ -90,7 +90,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           <a href="{{ path('app_livre_fiche', {'edition_id': edition.edition_id}) }}">
           <img src="{{ asset('/images/editions/' ~ edition.image_name) }}" style="height: 20vh;">
           </a>
-          <p>{{ edition.titre_livre }}<br><b>{{ (edition.prix_vente)/100 |  number_format(2, '.', ',') }} €</b></p>
+          <p>{{ edition.titre_livre }}<br><b>{{ ((edition.prix_vente)/100) |  number_format(2, '.', ',') }} €</b></p>
         </div>
       </div>
     {% endfor %}

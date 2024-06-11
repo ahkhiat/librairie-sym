@@ -12,6 +12,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
 #[ORM\Entity(repositoryClass: EditionRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[Vich\Uploadable]
 
 class Edition
@@ -70,6 +71,7 @@ class Edition
     {
         $this->panierArticles = new ArrayCollection();
         $this->commandeArticles = new ArrayCollection();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getEditionId(): ?int
@@ -160,10 +162,6 @@ class Edition
         return $this;
     }
 
-
-
-    
-
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
@@ -189,6 +187,12 @@ class Edition
     public function getImageFile(): ?File
     {
         return $this->imageFile;
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
     }
 
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self

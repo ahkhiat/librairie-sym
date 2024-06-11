@@ -40,6 +40,20 @@ class PanierArticleRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
     }
 
+    public function countArticlesInCart($user_id)
+    {
+        return $this->createQueryBuilder('pa')
+            ->select('SUM(pa.quantite)')
+            ->innerJoin('pa.panier', 'p')
+            ->innerJoin('p.user', 'u')
+            ->where('u.id = :userId')
+            ->setParameter('userId', $user_id)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    
+
     //    /**
     //     * @return PanierArticle[] Returns an array of PanierArticle objects
     //     */

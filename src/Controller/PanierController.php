@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Repository\PanierArticleRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PanierArticleRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class PanierController extends AbstractController
 {
+    private $panierArticleRepository;
+    private $entityManager;
+
+    public function __construct(PanierArticleRepository $panierArticleRepository, EntityManagerInterface $entityManager)
+    {
+        $this->panierArticleRepository = $panierArticleRepository;
+        $this->entityManager = $entityManager;
+    }
 
     #[Route('/panier', name: 'app_panier')]
     public function index(PanierArticleRepository $panierArticleRepository, TokenStorageInterface $tokenStorage): Response
@@ -39,6 +48,7 @@ class PanierController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $articleId = $data['edition_id'];
         $userId = $data['user_id'];
+        $quantite = $data['quantite'];
 
         if (!$userId) {
             return new Response('User not authenticated', 401);
@@ -69,7 +79,7 @@ class PanierController extends AbstractController
                 $connection->executeStatement("UPDATE panier_article SET quantite = ? WHERE panier_id = ? AND edition_id = ?", [$newQuantity, $panierId, $articleId]);
             } else {
                 // Ajouter un nouvel article au panier
-                $connection->executeStatement("INSERT INTO panier_article (panier_id, edition_id, quantite) VALUES (?, ?, 1)", [$panierId, $articleId]);
+                $connection->executeStatement("INSERT INTO panier_article (panier_id, edition_id, quantite) VALUES (?, ?, ?)", [$panierId, $articleId, $quantite]);
             }
 
             $connection->commit();
@@ -79,6 +89,22 @@ class PanierController extends AbstractController
             $connection->rollBack();
             return new Response('Erreur lors de l\'ajout de l\'article au panier : ' . $e->getMessage(), 500);
         }
+    }
+
+   
+    #[Route('/remove-item', name: 'remove_item',  methods: ['POST'])]
+    public function removeItem(Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $article = $this->panierArticleRepository->find($data['edition_id']);
+
+        if ($article) {
+            $this->entityManager->remove($article);
+            $this->entityManager->flush();
+            return $this->json(['success' => true]);
+        }
+
+        return $this->json(['success' => false], Response::HTTP_BAD_REQUEST);
     }
 
 

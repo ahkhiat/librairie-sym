@@ -16,12 +16,14 @@
         {% endblock %}
 
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+            {% block importmap %}
+             {{ importmap('app') }}
+            {% endblock %}
         {% endblock %}
     </head>
     <body>
         {% block header %}
-            {% include('headerCart.html.twig') %}
+             {{ render(controller('App\\Controller\\HeaderController::headerCart')) }}
         {% endblock %}
         
         {% block body %}
