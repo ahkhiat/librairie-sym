@@ -40,12 +40,15 @@ class Commande
     /**
      * @var Collection<int, CommandeArticle>
      */
-    #[ORM\OneToMany(targetEntity: CommandeArticle::class, mappedBy: 'commande')]
+    #[ORM\OneToMany(targetEntity: CommandeArticle::class, mappedBy: 'commande', cascade:["persist"])]
     private Collection $commandeArticles;
 
     public function __construct()
     {
         $this->commandeArticles = new ArrayCollection();
+        $this->status = "en cours";
+        $this->date_commande = new \DateTime();
+        $this->cout_total = 0.0;
     }
 
     public function getId(): ?int

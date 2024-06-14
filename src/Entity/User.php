@@ -226,6 +226,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPanierActif(): ?Panier
+    {
+        foreach ($this->getPaniers() as $panier) {
+            if (!$panier->isCommande()) {
+                return $panier;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @return Collection<int, Commande>
      */

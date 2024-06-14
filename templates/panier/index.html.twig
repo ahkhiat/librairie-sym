@@ -5,7 +5,7 @@
 {% block body %}
     
     
-<div class="container mt-4 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-8">
+<div class="container mt-4 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-9">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -15,37 +15,38 @@
 
     <h1>Panier</h1>
 
+{% if livres %}
+
 <div class="d-flex flex-column flex-md-row-reverse ">
 
-    <div class="mb-3 ms-md-3 col-md-5">
+    <div class="mb-3 ms-md-3 col-md-4">
         <!-- Sous-total -->
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <p class="card-title">Sous-total:</p>
-                    <p class="card-text">65€</p>
+                    <p class="card-text"><span id="sous-total">0</span>€</p>
                 </div>
                 <div class="d-flex justify-content-between">
                     <p class="card-title">Frais de livraison estimés</p>
-                    <p class="card-text">3.99€</p>
+                    <p class="card-text"><span id="fdp">0</span>€</p>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">
-                    <p class="fw-bold card-title">Total</p>
-                    <p class=" fs-3 card-text">3.99€</p>
+                    <p class="fw-bold card-title" >Total</p>
+                    <p class=" fs-3 card-text" ><span id="total">0</span>€</p>
                 </div>
-                <a href="#" class="btn btn-success btn-block">Passer à la caisse</a>
+                <a href="/commander" class="btn btn-success btn-block">Passer à la caisse</a>
             </div>
         </div>
     </div>
-
-    {% if livres %}
+    
     <div class="card col-12 col-md-6"> 
 
     {% for livre in livres %}
 
-        <div class="card-body">
-            <div class="d-flex">
+        <div class="card-body ">
+            <div class="d-flex ligne-panier-container ">
                 <img src="{{ asset('/images/editions/' ~ livre.image_name) }}" alt="{{ livre.image_name }}"
                                 class="img-fluid me-3" style="height: 17vh">
                 <div class="d-flex flex-column">
@@ -55,8 +56,8 @@
                             <div class="text-muted">{{ livre.prenom_auteur }} {{ livre.nom_auteur }} </div>
                             <div class="text-muted">{{ livre.nom_editeur }} </div>
                         </div>
-                        <div class="ms-auto fs-5 text-secondary">
-                            <p class="card-text">{{ (livre.prix_vente / 100) | number_format(2, '.', ',') }} €</p>
+                        <div class="ms-auto fs-5 text-secondary ">
+                            <p class="card-text"><span class="ligne-panier" id="ligne-{{ loop.index }}" data-prix="{{ (livre.prix_vente / 100) }}">{{ (livre.prix_vente / 100) | number_format(2, '.', ',') }}</span> €</p>
                         </div>
                     </div>
                     <div class="d-flex mt-auto">
@@ -65,7 +66,7 @@
 
                             <div class="input-group ms-auto ">
                                 <button class="btn btn-secondary btn-sm" type="button" onclick="updateQuantity('{{ livre.edition_id }}', -1)">-</button>
-                                <input type="text" class="form-control text-center" id="quantity-{{ livre.edition_id }}" value="{{ livre.quantite }}" readonly>
+                                <input type="text" class="form-control text-center input-quantity" id="quantity-{{ livre.edition_id }}" value="{{ livre.quantite }}" data-id="{{ livre.edition_id }}" readonly>
                                 <button class="btn btn-secondary btn-sm" type="button" onclick="updateQuantity('{{ livre.edition_id }}', 1)">+</button>
                             </div>
                         </div>
@@ -74,16 +75,8 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between">
-            </div>
-        
-            
-            <hr>
-        </div>
-  
-        
-            {# {{ ((livre.quantite)*(livre.prix_vente / 100)) | number_format(2, '.', ',') }} € #}
-             
+            {# <hr> #}
+        </div>             
         
         {% endfor %}
     </div>

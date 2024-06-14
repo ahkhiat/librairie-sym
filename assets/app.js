@@ -60,88 +60,33 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Fonction pour mettre à jour les quantités
-    function updateQuantity(id, change) {
-        const quantityInput = document.getElementById('quantity-' + id);
-        let currentQuantity = parseInt(quantityInput.value);
-        let newQuantity = currentQuantity + change;
 
-        if (newQuantity > 0) {
-            // Mettre à jour la quantité dans l'input
-            quantityInput.value = newQuantity;
+    // calcul sous total sur Panier
+    let allLignesPanier = document.querySelectorAll(".ligne-panier-container")
+    let totalPrix = 0;
+    let sousTotal = document.querySelector("#sous-total");
+    let fpd = document.querySelector("#fpd");
+    let total = document.querySelector("#total");
 
-            // Envoyer une requête AJAX pour mettre à jour la quantité sur le serveur
-            fetch('/update-quantity', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({ id: id, quantite: newQuantity })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Mettre à jour le prix total dans le tableau
-                document.getElementById('total-' + id).textContent = (newQuantity * data.prix_vente / 100).toFixed(2) + ' €';
-                // Vous pouvez également mettre à jour le total général du panier ici si nécessaire
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Erreur lors de la mise à jour de la quantité.');
-            });
-        }
-    }
+        allLignesPanier.forEach(ligne => {
+            let lignePrix = ligne.querySelector(".ligne-panier")
+            let prix = parseFloat(lignePrix.dataset.prix) 
+            // dataset permet de recuperer la valeur d'un attribut qu'on a nommé data-*
+            
+            let quantityInput = ligne.querySelector(".input-quantity");
+            let quantity = parseInt(quantityInput.value);
 
-    // Fonction pour supprimer un article
-    function removeItem(edition_id) {
-        // Envoyer une requête AJAX pour supprimer l'article
-        fetch('/remove-item', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({ edition_id: edition_id })
+            totalPrix += prix * quantity
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Supprimer la ligne de l'article dans le tableau
-                document.getElementById('row-' + id).remove();
-                // Vous pouvez également mettre à jour le total général du panier ici si nécessaire
-            } else {
-                alert('Erreur lors de la suppression de l\'article.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Erreur lors de la suppression de l\'article.');
-        });
-    }
+        console.log("total prix: " + totalPrix.toFixed(2) + "€")
+        sousTotal.innerText = totalPrix.toFixed(2) 
 
-    // Ajout des écouteurs d'événements pour les boutons plus et moins
-    document.querySelectorAll('.btn-plus').forEach(button => {
-        button.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            updateQuantity(id, 1);
-        });
-    });
+        total.innerText = totalPrix.toFixed(2)
 
-    document.querySelectorAll('.btn-minus').forEach(button => {
-        button.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            updateQuantity(id, -1);
-        });
-    });
 
-    // Ajout des écouteurs d'événements pour les boutons de suppression
-    document.querySelectorAll('.btn-remove').forEach(button => {
-        button.addEventListener('click', function() {
-            const edition_id = this.getAttribute('data-id');
-            removeItem(edition_id);
-        });
-    });
-});
+
+
+
+
 
 

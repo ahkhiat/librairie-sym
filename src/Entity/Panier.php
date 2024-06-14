@@ -22,6 +22,9 @@ class Panier
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     private ?User $user = null;
 
+    #[ORM\Column]
+    private ?bool $isCommande = false;
+
     /**
      * @var Collection<int, PanierArticle>
      */
@@ -91,4 +94,17 @@ class Panier
 
         return $this;
     }
+
+    public function isCommande(): bool
+    {
+        return $this->isCommande;
+    }
+
+    public function setIsCommande(bool $isCommande): self
+    {
+        $this->isCommande = $isCommande;
+
+        return $this;
+    }
+
 }
