@@ -24,6 +24,7 @@ class CommandeService
         $commande->setStatut('en cours');
         $commande->setDateCommande(new \DateTime());
         // Ajouter d'autres informations nécessaires à la commande
+        $totalCost = 0;
 
         foreach ($panier->getPanierArticles() as $panierItem) {
             $commandeItem = new CommandeArticle();
@@ -34,11 +35,16 @@ class CommandeService
 
             $commande->addCommandeArticle($commandeItem);
             $commandeItem->setCommande($commande);
+
+            $totalCost += $commandeItem->getPrixAchat() * $commandeItem->getQuantite();
         }
-        $commande->setCoutTotal($commande->getCoutTotal()); 
+        $commande->setCoutTotal($totalCost); 
 
 
         $this->em->persist($commande);
+        $this->em->flush();
+
+        $this->em->remove($panier);
         $this->em->flush();
 
         return $commande;

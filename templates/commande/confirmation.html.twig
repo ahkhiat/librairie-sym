@@ -3,15 +3,25 @@
 {% block title %}Confirmation de commande{% endblock %}
 
 {% block body %}
-{{dump(commande)}}
+{# {{dump(commande)}} #}
+<div class="container mt-4 col-12 col-sm-10 col-md-10 col-lg-10 col-xl-9">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/">commande</a></li>
+        </ol>
+    </nav>
+
     <h1>Confirmation de commande</h1>
     <p>Votre commande a été passée avec succès !</p>
     <p>Numéro de commande : {{ commande.id }}</p>
     <ul>
         {% for item in commande.commandearticles %}
-        {{dump(item)}}
-            {# <li>{{ item.livre.titreLivre }} - {{ item.quantity }} x {{ item.price }} €</li> #}
+        {# {{dump(item)}} #}
+            <li>{{ item.edition.livre.titreLivre }} - {{ item.quantite }} x {{ (item.prixAchat /100) | number_format(2, '.', ',')}} €</li>
         {% endfor %}
     </ul>
-    <p>Total : {{ commande.coutTotal }} €</p>
+    <p>Total : {{ (commande.coutTotal / 100) | number_format(2, '.', ',')}} €</p>
+</div>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\PanierArticle;
 use App\Entity\User;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -62,8 +63,10 @@ class PanierController extends AbstractController
             $panier = $stmt->fetchAssociative();
 
             if (!$panier) {
+                $dateObjet = new \DateTime();
+                $datePanier = $dateObjet->format('Y-m-d H:i:s');
                 // Créer un nouveau panier
-                $connection->executeStatement("INSERT INTO panier (user_id) VALUES (?)", [$userId]);
+                $connection->executeStatement("INSERT INTO panier (user_id, created_at) VALUES (?, ?)", [$userId, $datePanier]);
                 $panierId = $connection->lastInsertId();
             } else {
                 $panierId = $panier['id'];
@@ -107,5 +110,42 @@ class PanierController extends AbstractController
         return $this->json(['success' => false], Response::HTTP_BAD_REQUEST);
     }
 
+    #[Route('/panierupdate', name: 'update_cart', methods: ['POST'])]
+    public function updateCart(Request $request, EntityManagerInterface $em, LoggerInterface $logger): JsonResponse
+    {
+        $logger->info('updateCart called');
+        $data = json_decode($request->getContent(), true);
+
+        // Vérifiez la validité des données
+        if (!isset($data['article_id']) || !isset($data['quantity'])) {
+            $logger->error('Invalid data received', ['data' => $data]);
+            return new JsonResponse(['success' => false, 'message' => 'Invalid data'], 400);
+        }
+
+        $articleId = $data['article_id'];
+        $quantity = $data['quantity'];
+
+        $logger->info('Data received', ['article_id' => $articleId, 'quantity' => $quantity]);
+
+        // Recherchez l'article du panier correspondant
+        $cartItem = $em->getRepository(PanierArticle::class)->findOneBy([
+            'edition' => $articleId,
+            'user' => $this->getUser()
+        ]);
+
+        if (!$cartItem) {
+            $logger->error('Item not found', ['article_id' => $articleId]);
+            return new JsonResponse(['success' => false, 'message' => 'Item not found'], 404);
+        }
+
+        // Mettez à jour la quantité
+        $cartItem->setQuantite($quantity);
+        $em->persist($cartItem);
+        $em->flush();
+
+        $logger->info('Cart updated successfully', ['article_id' => $articleId, 'quantity' => $quantity]);
+
+        return new JsonResponse(['success' => true]);
+    }
 
 }

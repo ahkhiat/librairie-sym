@@ -26,6 +26,11 @@ class CommandeArticle
     #[ORM\ManyToOne(inversedBy: 'commandeArticles')]
     private ?Edition $edition = null;
 
+    public function __toString()
+    {
+        return sprintf('%s - %d x %.2f €', $this->edition->getLivre()->getTitreLivre(), $this->getQuantite(), $this->prix_achat / 100);
+    }
+
     public function getId(): ?int
     {
         return $this->id;

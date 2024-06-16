@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Commande;
 use App\Entity\Editeur;
 use App\Entity\Edition;
 use App\Entity\Livre;
@@ -59,6 +60,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Utilisateurs');
 
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Commande', 'fas fa-user', Commande::class);
         yield MenuItem::section();
 
         yield MenuItem::linkToUrl('Home', 'fa fa-home', $this->generateUrl('app_home'));

@@ -65,9 +65,9 @@
                             <button class="btn btn-danger btn-sm btn-remove" data-id="{{ livre.edition_id }}">Retirer</button>
 
                             <div class="input-group ms-auto ">
-                                <button class="btn btn-secondary btn-sm" type="button" onclick="updateQuantity('{{ livre.edition_id }}', -1)">-</button>
+                                <button class="btn btn-secondary btn-sm" type="button" id="button-minus" >-</button>
                                 <input type="text" class="form-control text-center input-quantity" id="quantity-{{ livre.edition_id }}" value="{{ livre.quantite }}" data-id="{{ livre.edition_id }}" readonly>
-                                <button class="btn btn-secondary btn-sm" type="button" onclick="updateQuantity('{{ livre.edition_id }}', 1)">+</button>
+                                <button class="btn btn-secondary btn-sm" type="button" id="button-plus" >+</button>
                             </div>
                         </div>
                     </div>
@@ -86,4 +86,8 @@
     {% endif %}
     </div>
 </div>
+
+
+<script src="{{ asset('js/panier.js') }}"></script>
+
 {% endblock %}

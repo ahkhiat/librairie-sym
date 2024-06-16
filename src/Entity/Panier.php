@@ -28,12 +28,13 @@ class Panier
     /**
      * @var Collection<int, PanierArticle>
      */
-    #[ORM\OneToMany(targetEntity: PanierArticle::class, mappedBy: 'panier')]
+    #[ORM\OneToMany(targetEntity: PanierArticle::class, mappedBy: 'panier', cascade:["persist", "remove"])]
     private Collection $panierArticles;
 
     public function __construct()
     {
         $this->panierArticles = new ArrayCollection();
+        $this->created_at = new \DateTime();
     }
 
     public function getId(): ?int
