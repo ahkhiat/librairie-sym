@@ -43,15 +43,15 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_profile', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-        return $this->render('user/profile.html.twig', [
+        return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/show/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);
@@ -69,7 +69,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
+    #[Route('/show/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->get('_token'))) {
@@ -81,25 +81,42 @@ class UserController extends AbstractController
     }
 
     #[Route('/profil', name: 'user_profile')]
-    public function profile(User $user, EntityManagerInterface $em): Response
+    public function profile(EntityManagerInterface $em): Response
     {
         // Récupérer l'utilisateur connecté
-        // $user = $this->getUser();
+        $user = $this->getUser();
 
         if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour voir votre profil.');
         }
 
-        dump($user);
-        die;
+      
+
+        // Rendre la vue avec les commandes
+        return $this->render('user/profile.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/commandes', name: 'user_commandes')]
+    public function commandes(EntityManagerInterface $em): Response
+    {
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour voir votre profil.');
+        }
 
         // Récupérer les commandes de l'utilisateur
         $commandes = $em->getRepository(Commande::class)->findBy(['user' => $user]);
 
         // Rendre la vue avec les commandes
-        return $this->render('user/profile.html.twig', [
+        return $this->render('user/commandes.html.twig', [
             'user' => $user,
             'commandes' => $commandes,
         ]);
     }
+
+
 }

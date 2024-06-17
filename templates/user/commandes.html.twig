@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    <h1>Mes commande</h1>
+
+    {{dump(commandes)}}
+<div class="col-12 col-sm-6 col-md-8 col-lg-6 mx-auto">
+    {% for commande in commandes %}
+    <div class="card mb-3">
+        <div class="card-body d-flex ">
+            <div class=" w-50">
+                <div>Commande {{commande.id}}</div>
+                <div class="text-muted">{{commande.dateCommande | date('d M Y')}}</div>
+            </div>
+            <div>
+                <div class=" fs-5">{{((commande.coutTotal)/100) | number_format(2, '.', ',')}} €</div>
+                <div class="text-muted">Nombre de produits : {{ commande.commandeArticles|length }}</div>
+            </div>
+            <div class="ms-auto align-self-center">
+            <a href="">Voir commande</a>
+            </div>
+        </div>
+    </div>
+    
+    {% endfor %}
+</div>
+
+
+{% endblock %}
