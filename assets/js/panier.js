@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateCartInDatabase(articleId, quantity) {
+        console.log('Updating cart with articleId:', articleId, 'quantity:', quantity);
+
         fetch('/panierupdate', {
             method: 'POST',
             headers: {

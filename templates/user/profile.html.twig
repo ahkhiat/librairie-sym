@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+
+<section>
+  <div class="container py-5">
+    
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            {# <img src="{{ vich_uploader_asset(user, 'imageFile') }}" alt="{{ user.imageName }}" #}
+              class="rounded-circle img-fluid" style="width: 150px;">
+                
+            <h5 class="my-3">{{ user.prenom }} {{ user.nom }}</h5>
+            <p class="text-muted mb-1">{% if 'ROLE_ADMIN' in user.getroles() %}
+                                        Administrateur                                        
+                                        {% endif %}
+                                        </p>
+            {# <p class="text-muted mb-4">{{ user.ville }}</p> #}
+          </div>
+        </div>
+        <div class="card mb-4 mb-lg-0">
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded-3">
+              
+              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                Membre depuis le : <p class="text-muted mb-0">{{ user.createdAt|date('d-m-Y') }}</p>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                {# <p class="mb-0"><a href="" target="_blank" style="text-decoration : none; color : inherit">{{ user.nombreReservations }}</a></p> #}
+                Profil mis à jour le : <p class="text-muted mb-0">{% if user.updatedAt %}
+                                                                    {{ user.updatedAt|date('d-m-Y') }}
+                                                                  {% else %}
+                                                                    {{ user.createdAt|date('d-m-Y') }}
+                                                                  {% endif %}</p>
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex justify-content-center mb-2">
+              <a href="{{ path('app_user_edit', {'id': user.id}) }}"><button type="button" class="btn btn-outline-warning">Modifier</button></a>
+              {# {{ include('user/_delete_form.html.twig') }} #}
+        </div>
+        </div>
+
+        
+
+      </div>
+      
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Nom</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ user.nom }}</p>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Prénom</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ user.prenom }}</p>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ user.email }}</p>
+              </div>
+            </div>
+            
+            <hr>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Date de naissance</p>
+              </div>
+              <div class="col-sm-9">
+                {# <p class="text-muted mb-0">{{ user.datenaissance|date('d-m-Y') }}</p> #}
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Téléphone</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ user.telephone }}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Addresse</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ user.adresse }} {{ user.codepostal }} {{ user.ville }}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Bio</p>
+              </div>
+              <div class="col-sm-9">
+                {# <p class="text-muted mb-0">{{ user.bio }} </p> #}
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        {# <div class="d-flex justify-content-center mb-2">
+              <a href="{{ path('app_user_edit', {'id': user.id}) }}"><button type="button" class="btn btn-primary">Modifier</button></a>
+              {{ include('user/_delete_form.html.twig') }}
+        </div> #}
+
+      
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

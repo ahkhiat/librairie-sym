@@ -5,6 +5,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto me-3 mb-2 mb-lg-0">
+       <li><a href="{{ path('user_profile') }}"><i class="fa-solid fa-user fa-xl me-3"></i></a></li>
        <li><a href="/panier"><i class="fa-solid fa-cart-shopping fa-xl"></i></a></li>
         {% if articleCount > 0 %}
             <span class="position-absolute top-10 start-90 translate-middle badge rounded-pill bg-danger">{{ articleCount }}</span>

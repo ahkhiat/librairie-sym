@@ -51,8 +51,13 @@
             
             {% if livre.stock > 10  %}
               <span class="text-success">En stock</span>
+            {% elseif livre.stock == 0 %}
+              <span class="text-danger"><strong>En rupture de stock</strong></span>
             {% else %}
-              <span class="text-danger"><strong>Il ne reste plus que {{ livre.stock }} exemplaires en stock</strong></span>
+              <span class="text-danger">
+              <strong>
+              Il ne reste plus que {{ livre.stock }} exemplaires en stock
+              </strong></span>
             {% endif %}
           </div>
 

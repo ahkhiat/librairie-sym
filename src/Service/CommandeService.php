@@ -31,7 +31,16 @@ class CommandeService
             $commandeItem->setEdition($panierItem->getEdition());
             $commandeItem->setQuantite($panierItem->getQuantite());
             $commandeItem->setPrixAchat($panierItem->getEdition()->getPrixVente());
-            
+
+             // Mise à jour du stock
+             $edition = $panierItem->getEdition();
+             $nouveauStock = $edition->getStock() - $panierItem->getQuantite();
+ 
+             if ($nouveauStock < 0) {
+                 throw new \Exception('Stock insuffisant pour l\'article: ' . $edition->getLivre()->getTitreLivre());
+             }
+ 
+             $edition->setStock($nouveauStock);
 
             $commande->addCommandeArticle($commandeItem);
             $commandeItem->setCommande($commande);

@@ -57,7 +57,7 @@
                             <div class="text-muted">{{ livre.nom_editeur }} </div>
                         </div>
                         <div class="ms-auto fs-5 text-secondary ">
-                            <p class="card-text"><span class="ligne-panier" id="ligne-{{ loop.index }}" data-prix="{{ (livre.prix_vente / 100) }}">{{ (livre.prix_vente / 100) | number_format(2, '.', ',') }}</span> €</p>
+                            <p class="card-text"><span class="ligne-panier" id="ligne-{{ loop.index }}" data-article-id="{{ livre.edition_id }}" data-prix="{{ (livre.prix_vente / 100) }}">{{ (livre.prix_vente / 100) | number_format(2, '.', ',') }}</span> €</p>
                         </div>
                     </div>
                     <div class="d-flex mt-auto">
@@ -66,7 +66,7 @@
 
                             <div class="input-group ms-auto ">
                                 <button class="btn btn-secondary btn-sm" type="button" id="button-minus" >-</button>
-                                <input type="text" class="form-control text-center input-quantity" id="quantity-{{ livre.edition_id }}" value="{{ livre.quantite }}" data-id="{{ livre.edition_id }}" readonly>
+                                <input type="text" class="form-control text-center input-quantity" id="quantity-{{ livre.edition_id }}" value="{{ livre.quantite }}" data-article-id="{{ livre.edition_id }}" readonly>
                                 <button class="btn btn-secondary btn-sm" type="button" id="button-plus" >+</button>
                             </div>
                         </div>

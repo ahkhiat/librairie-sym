@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\PanierArticle;
 use App\Entity\User;
+use App\Entity\Panier;
+use Psr\Log\LoggerInterface;
+use App\Entity\PanierArticle;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PanierArticleRepository;
@@ -127,10 +129,19 @@ class PanierController extends AbstractController
 
         $logger->info('Data received', ['article_id' => $articleId, 'quantity' => $quantity]);
 
+        $user = $this->getUser();
+
+        $panier = $em->getRepository(Panier::class)->findOneBy(['user' => $this->getUser()]);
+
+        if (!$panier) {
+                $logger->error('Panier not found for user', ['user_id' => $user->getId()]);
+                return new JsonResponse(['success' => false, 'message' => 'Panier not found'], 404);
+            }
+
         // Recherchez l'article du panier correspondant
         $cartItem = $em->getRepository(PanierArticle::class)->findOneBy([
             'edition' => $articleId,
-            'user' => $this->getUser()
+            'panier' => $panier
         ]);
 
         if (!$cartItem) {
