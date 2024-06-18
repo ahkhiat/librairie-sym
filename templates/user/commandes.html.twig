@@ -3,10 +3,22 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Mes commande</h1>
 
-    {{dump(commandes)}}
+
+{# {{dump(commandes)}} #}
+
 <div class="col-12 col-sm-6 col-md-8 col-lg-6 mx-auto">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item text-muted">commandes</li>
+        </ol>
+    </nav>
+
+<h1 class="mb-5">Mes commande</h1>
+
+
     {% for commande in commandes %}
     <div class="card mb-3">
         <div class="card-body d-flex ">
@@ -19,7 +31,7 @@
                 <div class="text-muted">Nombre de produits : {{ commande.commandeArticles|length }}</div>
             </div>
             <div class="ms-auto align-self-center">
-            <a href="">Voir commande</a>
+            <a href="{{ path('user_commande_show', {'id': commande.id }) }}">Voir commande</a>
             </div>
         </div>
     </div>

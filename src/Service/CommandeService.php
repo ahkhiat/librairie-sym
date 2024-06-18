@@ -2,10 +2,12 @@
 
 namespace App\Service;
 
-use App\Entity\Commande;
-use App\Entity\CommandeArticle;
-use App\Entity\CommandeItem;
 use App\Entity\Panier;
+use App\Entity\Facture;
+use App\Entity\Commande;
+use App\Entity\CommandeItem;
+use App\Entity\FactureLigne;
+use App\Entity\CommandeArticle;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CommandeService
@@ -52,6 +54,28 @@ class CommandeService
 
         $this->em->persist($commande);
         $this->em->flush();
+
+        // Création de la facture
+        $facture = new Facture();
+        $facture->setUser($panier->getUser());
+        $facture->setCommande($commande);
+        
+
+        foreach ($commande->getCommandeArticles() as $commandeItem) {
+            $factureLigne = new FactureLigne();
+            $factureLigne->setFacture($facture);
+            $factureLigne->setEdition($commandeItem->getEdition());
+            $factureLigne->setQuantite($commandeItem->getQuantite());
+            $factureLigne->setPrixVente($commandeItem->getPrixAchat());
+
+            $this->em->persist($factureLigne);
+        }
+
+        $this->em->persist($facture);
+        $this->em->flush();
+
+
+
 
         $this->em->remove($panier);
         $this->em->flush();

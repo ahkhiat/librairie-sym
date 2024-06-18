@@ -2,13 +2,15 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Commande;
+use App\Entity\User;
+use App\Entity\Livre;
+use App\Entity\Auteur;
+use App\Entity\Contact;
 use App\Entity\Editeur;
 use App\Entity\Edition;
-use App\Entity\Livre;
-use App\Entity\User;
-use App\Entity\Auteur;
+use App\Entity\Commande;
 use App\Entity\LivreAuteur;
+use App\Repository\ContactRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -17,6 +19,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
 class DashboardController extends AbstractDashboardController
 {
+    private $contactRepository;
+
+    public function __construct(ContactRepository $contactRepository)
+    {
+        $this->contactRepository = $contactRepository;
+    }
+    
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
@@ -47,6 +56,8 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        $unreadMessages = $this->contactRepository->countUnreadMessages();
+
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
 
@@ -61,7 +72,12 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Commande', 'fas fa-user', Commande::class);
-        yield MenuItem::section();
+
+        yield MenuItem::section('Messages');
+        yield MenuItem::linkToCrud('Contact', 'fas fa-message', Contact::class)
+            ->setBadge($unreadMessages, 'badge badge-danger');
+
+
 
         yield MenuItem::linkToUrl('Home', 'fa fa-home', $this->generateUrl('app_home'));
 

@@ -109,13 +109,23 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <div class="w3-row-padding">
       <div class="w3-col s4">
         <h4>Contact</h4>
-        <form action="/action_page.php" target="_blank">
+
+        {# <form action="/action_page.php" target="_blank">
           <p><input class="w3-input w3-border" type="text" placeholder="Name" name="Nom et Prenom" required></p>
           <p><input class="w3-input w3-border" type="text" placeholder="Email" name="Email" required></p>
           <p><input class="w3-input w3-border" type="text" placeholder="Subject" name="Objet" required></p>
           <p><input class="w3-input w3-border" type="text" placeholder="Message" name="Message" required></p>
           <button type="submit" class="w3-button w3-block w3-black">Envoyer</button>
-        </form>
+        </form> #}
+
+        {{ form_start(form) }}
+        {{ form_row(form.nom) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.sujet) }}
+        {{ form_row(form.message) }}
+        <button type="submit" class="w3-button w3-block w3-black">Envoyer</button>
+        {{ form_end(form) }}
+
       </div>
 
       <div class="w3-col s4">

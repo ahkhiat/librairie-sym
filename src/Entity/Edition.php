@@ -67,11 +67,18 @@ class Edition
     #[ORM\OneToMany(targetEntity: CommandeArticle::class, mappedBy: 'edition')]
     private Collection $commandeArticles;
 
+    /**
+     * @var Collection<int, FactureLigne>
+     */
+    #[ORM\OneToMany(targetEntity: FactureLigne::class, mappedBy: 'edition')]
+    private Collection $factureLignes;
+
     public function __construct()
     {
         $this->panierArticles = new ArrayCollection();
         $this->commandeArticles = new ArrayCollection();
         $this->updatedAt = new \DateTime();
+        $this->factureLignes = new ArrayCollection();
     }
 
     public function getEditionId(): ?int
@@ -297,6 +304,36 @@ class Edition
             // set the owning side to null (unless already changed)
             if ($commandeArticle->getEdition() === $this) {
                 $commandeArticle->setEdition(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FactureLigne>
+     */
+    public function getFactureLignes(): Collection
+    {
+        return $this->factureLignes;
+    }
+
+    public function addFactureLigne(FactureLigne $factureLigne): static
+    {
+        if (!$this->factureLignes->contains($factureLigne)) {
+            $this->factureLignes->add($factureLigne);
+            $factureLigne->setEdition($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactureLigne(FactureLigne $factureLigne): static
+    {
+        if ($this->factureLignes->removeElement($factureLigne)) {
+            // set the owning side to null (unless already changed)
+            if ($factureLigne->getEdition() === $this) {
+                $factureLigne->setEdition(null);
             }
         }
 

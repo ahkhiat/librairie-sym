@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Facture;
 use App\Entity\Commande;
+use App\Entity\FactureLigne;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,6 +117,37 @@ class UserController extends AbstractController
         return $this->render('user/commandes.html.twig', [
             'user' => $user,
             'commandes' => $commandes,
+        ]);
+    }
+
+    #[Route('/commandes/{id}', name: 'user_commande_show')]
+    public function commande_show(int $id, EntityManagerInterface $em): Response
+    {
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour voir votre profil.');
+        }
+
+        // Récupérer les commandes de l'utilisateur
+        $commande = $em->getRepository(Commande::class)->findOneBy([
+            'id' => $id,
+            'user' => $user
+        ]);
+
+        if (!$commande) {
+            throw $this->createNotFoundException('La commande n\'existe pas.');
+        }
+
+        $facture = $em->getRepository(Facture::class)->findOneBy(['commande' => $commande]);
+
+        
+        // Rendre la vue avec les commandes
+        return $this->render('user/commande_show.html.twig', [
+            'user' => $user,
+            'commande' => $commande,
+            'facture' =>$facture,
         ]);
     }
 

@@ -3,37 +3,44 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <ul class="navbar-nav ms-auto me-3 mb-2 mb-lg-0 d-flex align-items-center">
+    
+    <li class="nav-item">
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </li>
 
-      
-      <ul class="navbar-nav ms-auto me-3 mb-2 mb-lg-0">
-
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-user fa-xl me-3"></i>
-            </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ path('user_profile') }}">Profil</a></li>
-            <li><a class="dropdown-item" href="{{ path('user_commandes') }}">Mes commandes</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-
-        <li class="nav-item">
-          <a href="/panier"><i class="fa-solid fa-cart-shopping fa-xl"></i></a>
-        </li>
-        {% if articleCount > 0 %}
-            <span class="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger">{{ articleCount }}</span>
+    <li class="nav-item dropdown ms-3">
+      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-user fa-xl me-1"></i>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end">
+        {% if app.user %}
+        <li class="dropdown-item text-muted disabled">{{app.user.prenom}} {{app.user.nom}}</li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{{ path('user_profile') }}">Profil</a></li>
+        <li><a class="dropdown-item" href="{{ path('user_commandes') }}">Mes commandes</a></li>
+        <li><a class="dropdown-item" href="/logout">Se deconnecter</a></li>
+        {% else %}
+        <li><a href="/login" class="w3-bar-item w3-button w3-padding">Se connecter</a></li>
         {% endif %}
-
       </ul>
-      
-    </div>
+    </li>
+
+    <li class="nav-item ms-3 position-relative">
+      <a href="/panier"><i class="fa-solid fa-cart-shopping fa-xl"></i></a>
+      {% if articleCount > 0 %}
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ articleCount }}</span>
+      {% endif %}
+    </li>
+
+  </ul>
+</div>
+
+
   </div>
 </nav>
