@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Facture;
 use App\Entity\User;
 use App\Entity\Livre;
 use App\Entity\Auteur;
@@ -71,7 +72,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Utilisateurs');
 
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud('Commande', 'fas fa-user', Commande::class);
+        yield MenuItem::linkToCrud('Commandes', 'fas fa-user', Commande::class);
+        yield MenuItem::linkToCrud('Factures', 'fas fa-user', Facture::class);
 
         yield MenuItem::section('Messages');
         yield MenuItem::linkToCrud('Contact', 'fas fa-message', Contact::class)
