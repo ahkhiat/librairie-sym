@@ -1,24 +1,12 @@
 <IfModule mod_rewrite.c>
-    RewriteEngine on
-
-    # SSL and let's encrypt exceptions
-    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/.+$
-    RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
-    RewriteRule ^.well-known/acme-challenge - [L]
-
-    # Redirect to no-www
-    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-
-    # HTTPS redirect
-    RewriteCond %{HTTPS} off
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-    # Redirect all requests to public directory
+    RewriteEngine On
+ 
+    RewriteCond %{THE_REQUEST} /public/([^\s?]*) [NC]
+    RewriteRule ^ %1 [L,NE,R=302]
+ 
+    RewriteRule !\.(js|gif|JPG|JPEG|PNG|jpeg|jpg|png|webmanifest|webp|css|txt|svg|woff|woff2|ttf|map|ico)$ public/index.php [L]
     RewriteCond %{REQUEST_URI} !^/public/
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /public/$1 [L]
+    RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 
 # Custom Error Documents
