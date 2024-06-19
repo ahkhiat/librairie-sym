@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Facture;
 use App\Entity\FactureLigne;
+use DateTime;
 use Konekt\PdfInvoice\InvoicePrinter;
 use Symfony\Component\Asset\Packages;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,24 +54,25 @@ class FactureController extends AbstractController
         $logoWebPath = $assets->getUrl('/images/site/pickabook.png');
         $logoAbsolutePath = $this->getParameter('kernel.project_dir') . '/public/images/site/pickabook.png';
 
-
+        $date = new DateTime();
         // Définir les paramètres de la facture
         $invoice->setLogo($logoAbsolutePath);   // Mettre à jour avec le chemin de votre logo
-        $invoice->setColor("#007fff");           // Couleur
+        $invoice->setColor("#ff8c08");           // Couleur
         $invoice->setType("Facture");            // Type de document
-        $invoice->setReference("INV-55033645");  // Référence de la facture
-        $invoice->setDate(date('M dS ,Y', time()));  // Date de la facture
+        $invoice->setReference($date->format('Y').$date->format('m').'00'.$id);  // Référence de la facture
+        $invoice->setDate(date('d m Y', time()));  // Date de la facture
         $invoice->setTime(date('h:i:s A', time()));  // Heure de la facture
-        $invoice->setFrom(array("Your Company", "Street Address", "City, Zip Code", "Country"));
-        $invoice->setTo(array($facture->getUser()->getNom(), "Street Address", "City, Zip Code", "Country"));
+        $invoice->setFrom(array("PickaBook", "54 bd Laveran", "13013 Marseille", "France"));
+        $invoice->setTo(array($facture->getUser()->getPrenom() .' '. $facture->getUser()->getNom(), $facture->getUser()->getAdresse(), 
+                              $facture->getUser()->getCodePostal().' '.$facture->getUser()->getVille()));
  
 
         // Ajouter les lignes de la facture
         foreach ($facture->getFactureLignes() as $ligne) {
 
-            $prixVente = number_format(($ligne->getPrixVente()/100), 2, ',', ' ');
-            $total = number_format(($ligne->getQuantite() * $ligne->getPrixVente()/100), 2, ',', ' ');
-            $totalFacture = number_format(($facture->getCommande()->getCoutTotal())/100, 2, ',', ' ');
+            $prixVente = number_format(($ligne->getPrixVente()/100), 2, ',', ' ').'€';
+            $total = number_format(($ligne->getQuantite() * $ligne->getPrixVente()/100), 2, ',', ' ').'€';
+            $totalFacture = number_format(($facture->getCommande()->getCoutTotal())/100, 2, ',', ' ').'€';
 
             $invoice->addItem($ligne->getEdition()->getLivre()->getTitreLivre(), 
                               '', // description vide

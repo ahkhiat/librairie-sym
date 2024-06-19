@@ -17,6 +17,10 @@
     <p>effectuée le {{ commande.dateCommande|date('d-m-Y') }}</p>
 
     <p><a href="{{ path('show_facture', { 'id': facture.id }) }}">Voir ma facture</a></p>
+    <a class="btn bg-white btn-light mx-1px text-95" href="{{ path('facture_pdf', { 'id': facture.id }) }}" data-title="PDF">
+        <i class="mr-1 fa fa-file-pdf-o text-danger-m1 text-120 w-2"></i>
+        Export
+    </a>
 {# {{dump(facture)}} #}
 
 
